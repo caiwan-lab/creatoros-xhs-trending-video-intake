@@ -29,7 +29,8 @@ platform-wide popularity ranking or a causal traffic conclusion.
    time, with a delay; stop on CAPTCHA, access denial, or repeated errors.
 3. The CreatorOS destination must have the existing
    `04_系统维护/scripts/creator-platform-video-intake.py` and local
-   `creator-local-transcribe` route available.
+   `creator-local-transcribe` route available. Run the bundled check first if
+   the computer is new.
 4. Browser-cookie retries are opt-in: get the user's explicit authorization
    before adding `--allow-browser-cookies` to an intake command.
 
@@ -55,6 +56,23 @@ The script writes:
 
 It searches only `--type video`, is serial, and never likes, saves, comments,
 follows, replies, or publishes.
+
+## Local transcription setup on a new computer
+
+This Skill includes the runtime setup for the local `faster-whisper` route.
+Checking changes nothing:
+
+```bash
+python scripts/setup_creatoros_transcription.py \
+  --creatoros-vault /path/to/CreatorOS \
+  --model small
+```
+
+Only after the user explicitly agrees to download dependencies and the model,
+run the same command with `--install`. It creates/uses CreatorOS's isolated
+`04_系统维护/.venvs/video-local` environment, installs `faster-whisper`, and
+downloads the selected model to CreatorOS's local cache. It does not use a
+transcription API or API tokens. Do not invoke `--install` silently.
 
 ## 2. Intake every selected candidate
 
@@ -108,3 +126,5 @@ write directly to final Wiki pages.
 - `scripts/discover_xhs_videos.py`: public candidate discovery and normalization.
 - `scripts/run_creatoros_intake.py`: serial command-template runner for the
   existing CreatorOS single-video intake.
+- `scripts/setup_creatoros_transcription.py`: non-mutating runtime check plus
+  an explicit, local `faster-whisper`/model installer.

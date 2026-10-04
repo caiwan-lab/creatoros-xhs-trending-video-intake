@@ -30,6 +30,20 @@ it does not mislabel post copy as word-for-word speech.
 - a local CreatorOS checkout containing `creator-platform-video-intake.py` and
   the local `faster-whisper` route.
 
+## Set up local transcription
+
+Check a new CreatorOS checkout without changing it:
+
+```bash
+python scripts/setup_creatoros_transcription.py \
+  --creatoros-vault /path/to/CreatorOS \
+  --model small
+```
+
+After the user approves the dependency/model download, add `--install`. The
+setup is local and creates the isolated CreatorOS `video-local` environment;
+it does not call an API or consume transcription tokens.
+
 Do not put cookies, real captures, local media, or personal paths into this repo.
 
 ## License
