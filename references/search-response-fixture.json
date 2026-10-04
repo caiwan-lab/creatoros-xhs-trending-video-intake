@@ -7,7 +7,18 @@
         "type": "video",
         "title": "示例视频标题",
         "user": {"nickname": "示例作者", "user_id": "fixture-user"},
-        "interact_info": {"liked_count": "1.2万", "comment_count": "88", "collected_count": "666", "share_count": "12"}
+        "interact_info": {"liked_count": "1.2万", "comment_count": "88", "collected_count": "666", "shared_count": "12"},
+        "corner_tag_info": [{"type": "publish_time", "text": "2026-10-03"}]
+      }
+    },
+    {
+      "id": "fixture-video-003",
+      "note_card": {
+        "type": "video",
+        "title": "测试赛道的第二条视频",
+        "user": {"nickname": "第二位作者", "user_id": "fixture-user-2"},
+        "interact_info": {"liked_count": "2600", "comment_count": "100", "collected_count": "300", "shared_count": "20"},
+        "corner_tag_info": [{"type": "publish_time", "text": "2026-09-30"}]
       }
     },
     {

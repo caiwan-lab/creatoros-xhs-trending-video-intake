@@ -16,9 +16,15 @@ npx skills add Akumahate11/creatoros-xhs-trending-video-intake -g
 ## What it does
 
 1. Searches public **video** notes serially, using `popular` and `latest`.
-2. Writes raw JSON, a deduplicated `candidates.json`, and a readable candidate table.
-3. Runs a caller-supplied local CreatorOS command once per selected candidate.
-4. Keeps failures visible rather than making up metrics or transcripts.
+2. Filters by the returned publication date and a configurable total-interaction threshold.
+3. Ranks candidates with a transparent local relevance / heat / recency score.
+4. Writes raw JSON, a deduplicated `candidates.json`, Markdown and HTML reports.
+5. Runs a caller-supplied local CreatorOS command once per selected candidate.
+6. Keeps failures visible rather than making up metrics or transcripts.
+
+The score is a local candidate-ranking heuristic, not an official Xiaohongshu
+metric or a full historical dataset. For broad topics, the Skill can suggest
+sub-directions; it does not force users to choose one before searching.
 
 For spoken transcription, the current CreatorOS Xiaohongshu adapter uses local
 ASR after a permitted media download. It preserves the post body separately;

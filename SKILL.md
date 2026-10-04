@@ -10,8 +10,9 @@ description: Discover public Xiaohongshu high-engagement video candidates by top
 Build a traceable research batch for a topic:
 
 ```text
-topic keywords
+topic keywords (one or several)
   -> serial public-video search (popular + latest)
+  -> time window + interaction threshold + local three-dimension scoring
   -> deduplicated high-engagement candidates: title / URL / author / public signals
   -> one-at-a-time CreatorOS single-video intake
   -> post text + permitted media + local ASR transcript + pending video card
@@ -38,12 +39,16 @@ platform-wide popularity ranking or a causal traffic conclusion.
 
 Use two complementary search rankings by default: `popular` finds platform
 high-engagement candidates; `latest` reduces the chance that research only
-contains old posts. Keep the exact keywords and raw responses.
+contains old posts. Keep the exact keywords and raw responses. For a wide seed
+term, propose 5–8 useful sub-directions first, but let the user search the
+original term immediately when they prefer; do not impose a blocking question.
 
 ```bash
 python scripts/discover_xhs_videos.py \
   --keyword '养生' \
   --keyword '健康生活方式' \
+  --days auto \
+  --min-interactions 1000 \
   --output-dir /path/to/research-batch
 ```
 
@@ -52,7 +57,19 @@ The script writes:
 - `raw/`: one unmodified JSON response per query, ranking, and page;
 - `candidates.json`: deduplicated machine-readable records;
 - `爆款候选表.md`: readable title / link / author / available public-signal table;
+- `小红书高互动视频候选报告.html`: local visual report with selection reason;
 - `manifest.json`: query, ranking, timing, and counts.
+
+The discovery script uses an explicit, local score:
+
+- relevance, 0–10: query/title match;
+- heat, 0–3: batch-relative `likes + collections + comments + shares`;
+- recency, 0–2: the publish date returned in the current search payload.
+
+Its default `--days auto` attempts 1, 3, 7, then 30 days until it has the
+requested minimum candidates; `--days 7` fixes a window. It only sees dates in
+the current public search response, so it is **not** a complete historical
+database. The score is `local_heuristic_v1`, not a platform or Redfox score.
 
 It searches only `--type video`, is serial, and never likes, saves, comments,
 follows, replies, or publishes.
