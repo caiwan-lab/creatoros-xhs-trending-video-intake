@@ -10,8 +10,13 @@ comments, follows, or CAPTCHA/login bypass.
 ## Install
 
 ```bash
-npx skills add Akumahate11/creatoros-xhs-trending-video-intake -g
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo caiwan-lab/creatoros-xhs-trending-video-intake \
+  --path skills/creatoros-xhs-trending-video-intake
 ```
+
+After installation, start a new Codex turn so the Skill is discovered. The
+command uses Codex's bundled installer and does not require `npx`.
 
 ## What it does
 
