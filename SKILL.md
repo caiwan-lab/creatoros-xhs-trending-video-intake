@@ -59,8 +59,18 @@ follows, replies, or publishes.
 
 ## Local transcription setup on a new computer
 
-This Skill includes the runtime setup for the local `faster-whisper` route.
-Checking changes nothing:
+This Skill includes one non-mutating preflight for the whole chain: `xhs`
+installation/login, CreatorOS intake, downloader, and the local ASR runtime.
+It never prints cookies.
+
+```bash
+python scripts/check_xhs_intake_environment.py \
+  --creatoros-vault /path/to/CreatorOS \
+  --model small
+```
+
+It also includes the runtime setup for the local `faster-whisper` route.
+Checking only the ASR part changes nothing:
 
 ```bash
 python scripts/setup_creatoros_transcription.py \
@@ -77,11 +87,16 @@ transcription API or API tokens. Do not invoke `--install` silently.
 ## 2. Intake every selected candidate
 
 Do not claim a platform post body is a word-for-word transcript. The current
-Xiaohongshu adapter preserves visible post text separately. For spoken content,
-it uses a verified caption track **only if a future adapter explicitly returns
-one as a caption track**; otherwise it downloads permitted media and uses local
-`faster-whisper small`. If media or a usable caption track is unavailable, keep
-the failure status rather than inventing a transcript.
+Xiaohongshu adapter preserves visible post text separately. Before every intake,
+the runner probes the public `xhs read` payload for a structured subtitle/caption
+track. It accepts only an explicit track with text segments; it never treats
+`desc` or visible post copy as a spoken transcript. Current known XHS output
+does not expose a verified downloadable spoken-caption track, so the normal
+decision is `local_asr_required`: download permitted media and use local
+`faster-whisper small`. If a future payload exposes a real track, the probe
+records `caption_adapter_required` rather than falsely claiming it extracted
+one. If media or a usable caption track is unavailable, keep the failure status
+rather than inventing a transcript.
 
 Run candidate intake one at a time. The command template is required so this
 public Skill contains no personal machine path, vault name, or browser setting:
@@ -128,3 +143,7 @@ write directly to final Wiki pages.
   existing CreatorOS single-video intake.
 - `scripts/setup_creatoros_transcription.py`: non-mutating runtime check plus
   an explicit, local `faster-whisper`/model installer.
+- `scripts/check_xhs_intake_environment.py`: safe preflight for XHS login,
+  downloader, CreatorOS intake, and local ASR.
+- `scripts/probe_xhs_spoken_captions.py`: strict structured-caption probe;
+  visible post text is excluded by design.

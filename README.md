@@ -32,6 +32,18 @@ it does not mislabel post copy as word-for-word speech.
 
 ## Set up local transcription
 
+Check the complete local pipeline without changing it:
+
+```bash
+python scripts/check_xhs_intake_environment.py \
+  --creatoros-vault /path/to/CreatorOS \
+  --model small
+```
+
+This checks that `xhs` is installed and logged in, the CreatorOS single-video
+intake/downloader is present, and local ASR is ready. It reports only booleans;
+it never prints browser cookies.
+
 Check a new CreatorOS checkout without changing it:
 
 ```bash
@@ -43,6 +55,16 @@ python scripts/setup_creatoros_transcription.py \
 After the user approves the dependency/model download, add `--install`. The
 setup is local and creates the isolated CreatorOS `video-local` environment;
 it does not call an API or consume transcription tokens.
+
+## Caption handling
+
+Before each selected video enters the existing CreatorOS intake, the runner
+probes `xhs read` for a structured, timed caption track. Note-body text is
+always kept separate and is never presented as a spoken transcript. The current
+XHS route normally proceeds to local ASR because no verified downloadable
+spoken-caption track is exposed; if a future track appears, the batch records
+that an explicit caption adapter is still needed rather than silently using the
+wrong text.
 
 Do not put cookies, real captures, local media, or personal paths into this repo.
 
