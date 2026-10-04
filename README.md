@@ -7,6 +7,12 @@ videos to a local CreatorOS transcription pipeline.
 It is deliberately read-only toward Xiaohongshu: no publishing, likes, saves,
 comments, follows, or CAPTCHA/login bypass.
 
+If a computer has no CreatorOS checkout, the Skill creates a visible standalone
+research workspace under `~/Documents/CreatorOS-Research/` rather than asking
+for another computer's absolute path. It keeps raw search records, reports and
+transcripts, while treating downloaded media as temporary after transcript
+verification.
+
 ## Install
 
 ```bash

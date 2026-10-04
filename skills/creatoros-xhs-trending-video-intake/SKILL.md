@@ -28,14 +28,55 @@ platform-wide popularity ranking or a causal traffic conclusion.
    is unavailable; never expose or copy cookies.
 2. Use public, normally accessible video notes only. Search one request at a
    time, with a delay; stop on CAPTCHA, access denial, or repeated errors.
-3. The CreatorOS destination must have the existing
-   `04_系统维护/scripts/creator-platform-video-intake.py` and local
-   `creator-local-transcribe` route available. Run the bundled check first if
-   the computer is new.
+3. Choose one storage mode before downloading anything: an existing CreatorOS
+   checkout, or the standalone mode below. Do not ask a new computer for an
+   old computer's CreatorOS path.
 4. Browser-cookie retries are opt-in: get the user's explicit authorization
    before adding `--allow-browser-cookies` to an intake command.
 
-## 1. Discover candidates
+## 1. Choose a storage mode, then discover candidates
+
+### Existing CreatorOS
+
+Use the normal CreatorOS intake only when that checkout actually exists. Run
+the bundled check first on a new machine:
+
+```bash
+python scripts/check_xhs_intake_environment.py \
+  --creatoros-vault /path/to/CreatorOS \
+  --model small
+```
+
+### No CreatorOS checkout: standalone research workspace
+
+When the computer does not have CreatorOS, create a local workspace yourself;
+do not stop to request an old absolute path. The default is in Documents so the
+user can find it without opening hidden application folders:
+
+```bash
+python scripts/init_standalone_research_workspace.py --topic '养生'
+```
+
+It creates:
+
+```text
+~/Documents/CreatorOS-Research/小红书爆款研究/YYYY-MM-DD-养生/
+  00_原始搜索/       exact CLI responses and request logs
+  01_候选与报告/     candidates.json, Markdown and HTML reports
+  02_逐字稿/         verified local spoken transcripts
+  03_分析草稿/       non-final analysis only
+  临时媒体/          permitted downloaded media, deleted only after transcript verification
+  logs/
+```
+
+For a standalone batch, copy the discovery outputs into `00_原始搜索/` and
+`01_候选与报告/`. Keep one source folder per candidate under `00_原始搜索/`.
+Use `临时媒体/` only for permitted local media. Delete a media file only after
+the corresponding transcript exists in `02_逐字稿/` and record that outcome in
+`research-manifest.json` or the candidate log. If local ASR/downloader setup is
+missing, report that status; do not claim CreatorOS intake ran.
+
+### Discover
 
 Use two complementary search rankings by default: `popular` finds platform
 high-engagement candidates; `latest` reduces the chance that research only
@@ -74,7 +115,7 @@ database. The score is `local_heuristic_v1`, not a platform or Redfox score.
 It searches only `--type video`, is serial, and never likes, saves, comments,
 follows, replies, or publishes.
 
-## Local transcription setup on a new computer
+## Local transcription setup on a new CreatorOS computer
 
 This Skill includes one non-mutating preflight for the whole chain: `xhs`
 installation/login, CreatorOS intake, downloader, and the local ASR runtime.
@@ -101,7 +142,7 @@ run the same command with `--install`. It creates/uses CreatorOS's isolated
 downloads the selected model to CreatorOS's local cache. It does not use a
 transcription API or API tokens. Do not invoke `--install` silently.
 
-## 2. Intake every selected candidate
+## 2. Intake every selected candidate with CreatorOS
 
 Do not claim a platform post body is a word-for-word transcript. The current
 Xiaohongshu adapter preserves visible post text separately. Before every intake,
@@ -164,3 +205,5 @@ write directly to final Wiki pages.
   downloader, CreatorOS intake, and local ASR.
 - `scripts/probe_xhs_spoken_captions.py`: strict structured-caption probe;
   visible post text is excluded by design.
+- `scripts/init_standalone_research_workspace.py`: creates a visible,
+  source-preserving research batch for a computer that has no CreatorOS checkout.
