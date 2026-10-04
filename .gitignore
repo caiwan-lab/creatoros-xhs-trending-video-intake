@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+raw/
+*.mp4
+*.mov
+*.m4a
+*.mp3
+intake-runs/
+research-batch/

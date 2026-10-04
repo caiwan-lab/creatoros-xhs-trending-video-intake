@@ -1,0 +1,4 @@
+interface:
+  display_name: "CreatorOS Xiaohongshu Trending Video Intake"
+  short_description: "Find public Xiaohongshu video candidates and route them to local transcription"
+  default_prompt: "Find public Xiaohongshu high-engagement video candidates for my topic, preserve title/link/public signals, then route selected videos through the local CreatorOS transcription intake."

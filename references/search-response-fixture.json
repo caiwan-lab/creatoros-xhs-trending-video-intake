@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "id": "fixture-video-001",
+      "xsec_token": "fixture-token",
+      "note_card": {
+        "type": "video",
+        "title": "示例视频标题",
+        "user": {"nickname": "示例作者", "user_id": "fixture-user"},
+        "interact_info": {"liked_count": "1.2万", "comment_count": "88", "collected_count": "666", "share_count": "12"}
+      }
+    },
+    {
+      "id": "fixture-image-002",
+      "note_card": {"type": "normal", "title": "应被过滤的图文笔记"}
+    }
+  ]
+}
